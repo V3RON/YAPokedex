@@ -1,0 +1,14 @@
+<header class="pokemon-list-view__header">
+    <h1>YaPokedex!</h1>
+    <div class="pokemon-list-view__search">
+      <poke-search-form (pokeSearch)="showPokemonModal($event)"></poke-search-form>
+    </div>
+</header>
+<poke-list-view [items]="pokemons$ | async" [pageIndex]="pageIndex$ | async" (page)="pageChanged($event)">
+    <ng-template let-item>
+        <div class="pokemon-list-view__card" (click)="showPokemonModal(item.id)">
+            <div class="pokemon-list-view__card-header">{{ item.name | titlecase }}</div>
+        </div>
+    </ng-template>
+</poke-list-view>
+<router-outlet></router-outlet>

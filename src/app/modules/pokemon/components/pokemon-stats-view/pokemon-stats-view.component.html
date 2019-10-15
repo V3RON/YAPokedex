@@ -1,0 +1,11 @@
+<h2 class="pokemon-stats-view__heading">Statistics:</h2>
+<mat-grid-list [cols]="_cols" rowHeight="150px">
+    <mat-grid-tile *ngFor="let stat of _plainStats">
+        <div class="pokemon-stats-view__card mat-elevation-z2">
+            {{ stat.name | dashreplacer | titlecase }}
+            <div class="pokemon-stats-view__stat-value">
+                {{ stat.value }}
+            </div>
+        </div>
+    </mat-grid-tile>
+</mat-grid-list>

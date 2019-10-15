@@ -1,0 +1,6 @@
+<mat-grid-list [cols]="_cols" rowHeight="70px">
+    <mat-grid-tile *ngFor="let item of _items">
+        <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
+    </mat-grid-tile>
+</mat-grid-list>
+<mat-paginator [pageIndex]="pageIndex" [pageSize]="10" [length]="100" (page)="pageChanged($event)"></mat-paginator>
