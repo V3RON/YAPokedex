@@ -12,7 +12,7 @@ import {
   MatInputModule,
   MatSnackBarModule
 } from '@angular/material';
-import { SearchFormComponent } from './components/search-form/search-form.component';
+import { SearchFormComponent } from './components/pokemon-search-form/pokemon-search-form.component';
 import { PokemonListComponent } from './pages/pokemon-list/pokemon-list.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -58,4 +58,5 @@ const MODALS = [
     ...MODALS
   ]
 })
-export class PokemonModule { }
+export class PokemonModule {
+}

@@ -18,7 +18,7 @@ const ROUTES: Routes = [
     children: [
       {
         path: ':id',
-        component: PokemonDetailsComponent
+        component: PokemonDetailsComponent,
       }
     ]
   },
@@ -35,4 +35,5 @@ const ROUTES: Routes = [
   ],
   exports: [RouterModule]
 })
-export class PokemonRoutingModule { }
+export class PokemonRoutingModule {
+}

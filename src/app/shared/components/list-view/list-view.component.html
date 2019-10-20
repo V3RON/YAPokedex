@@ -1,6 +1,7 @@
-<mat-grid-list [cols]="_cols" rowHeight="70px">
-    <mat-grid-tile *ngFor="let item of _items">
-        <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
-    </mat-grid-tile>
+<mat-grid-list [cols]="cols" class="poke-list-view__list" rowHeight="70px">
+  <mat-grid-tile *ngFor="let item of items">
+    <ng-container *ngTemplateOutlet="itemTemplate; context: { $implicit: item }"></ng-container>
+  </mat-grid-tile>
 </mat-grid-list>
-<mat-paginator [pageIndex]="pageIndex" [pageSize]="10" [length]="100" (page)="pageChanged($event)"></mat-paginator>
+<mat-paginator (page)="pageChanged($event)" [length]="length" [pageIndex]="pageIndex" [pageSize]="pageSize"
+               class="poke-list-view__paginator"></mat-paginator>

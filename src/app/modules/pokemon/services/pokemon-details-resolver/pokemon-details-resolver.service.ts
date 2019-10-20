@@ -1,24 +1,25 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
+import { ActivatedRouteSnapshot, Resolve } from '@angular/router';
 import { PokemonDetails } from 'src/app/core/model/pokemon.model';
 import { PokemonService } from 'src/app/core/services/pokemon/pokemon.service';
-import { empty, Observable } from 'rxjs';
-import { LogService } from 'src/app/core/services/log/log.service';
+import { EMPTY, Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PokemonDetailsResolver implements Resolve<PokemonDetails> {
-  constructor(private _pokemonService: PokemonService, private _log: LogService) {}
+  constructor(
+    private pokemonService: PokemonService,
+  ) {
+  }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<PokemonDetails> {
+  resolve(route: ActivatedRouteSnapshot): Observable<PokemonDetails> {
     const pokemonId: number = Number(route.params.id);
 
-    if (Number.isNaN(pokemonId)) {
-      this._log.debug("Pokemon ID is not a number, restricting access");
-      return empty();
+    if (isNaN(pokemonId)) {
+      return EMPTY;
     }
 
-    return this._pokemonService.getEntity(pokemonId);
+    return this.pokemonService.getEntity(pokemonId);
   }
 }

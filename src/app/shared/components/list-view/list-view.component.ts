@@ -1,4 +1,5 @@
 import {
+  AfterContentInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -23,10 +24,29 @@ import { map } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class ListViewComponent implements OnInit, OnDestroy {
-  _items: unknown[] = [];
-  _pageIndex: number = 0;
-  _cols = 2;
+export class ListViewComponent implements OnInit, OnDestroy, AfterContentInit {
+  cols = 2;
+  @Input()
+  pageSize = 10;
+  @Input()
+  length: number;
+  @Output()
+  page: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
+  @ContentChild(TemplateRef, {static: true}) itemTemplate: TemplateRef<Element>;
+  private breakpointObserverSub: Subscription;
+
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private changeDetRef: ChangeDetectorRef
+  ) {
+  }
+
+  // tslint:disable-next-line:variable-name
+  private _items: unknown[] = [];
+
+  get items() {
+    return this._items;
+  }
 
   @Input()
   set items(value: unknown[]) {
@@ -34,8 +54,12 @@ export class ListViewComponent implements OnInit, OnDestroy {
       this._items = value;
     }
   }
-  get items() {
-    return this._items;
+
+  // tslint:disable-next-line:variable-name
+  private _pageIndex = 0;
+
+  get pageIndex() {
+    return this._pageIndex;
   }
 
   @Input()
@@ -44,43 +68,34 @@ export class ListViewComponent implements OnInit, OnDestroy {
       this._pageIndex = value;
     }
   }
-  get pageIndex() {
-    return this._pageIndex;
-  }
-
-  @Output('page')
-  pageEventEmitter: EventEmitter<PageEvent> = new EventEmitter<PageEvent>();
-
-  @ContentChild(TemplateRef, { static: false }) itemTemplate: TemplateRef<Element>;
-
-  private _breakpointObserverSub: Subscription;
-
-  constructor(
-    private _breakpointObserver: BreakpointObserver,
-    private _changeDetRef: ChangeDetectorRef
-  ) {}
 
   ngOnInit(): void {
-    this._breakpointObserverSub = this._breakpointObserver
-      .observe([ Breakpoints.Medium, Breakpoints.Large ])
+    this.breakpointObserverSub = this.breakpointObserver
+      .observe([Breakpoints.Medium, Breakpoints.Large])
       .pipe(map(result => result.breakpoints))
       .subscribe(result => {
         if (result[Breakpoints.Medium]) {
-          this._cols = 3;
+          this.cols = 3;
         } else if (result[Breakpoints.Large]) {
-          this._cols = 4;
+          this.cols = 4;
         } else {
-          this._cols = 2;
+          this.cols = 2;
         }
-        this._changeDetRef.markForCheck();
+        this.changeDetRef.markForCheck();
       });
   }
 
+  ngAfterContentInit(): void {
+    if (!this.itemTemplate) {
+      throw new Error('[ListViewComponent] Missing item template!');
+    }
+  }
+
   ngOnDestroy(): void {
-    this._breakpointObserverSub.unsubscribe();
+    this.breakpointObserverSub.unsubscribe();
   }
 
   pageChanged(event: PageEvent): void {
-    this.pageEventEmitter.emit(event);
+    this.page.emit(event);
   }
 }

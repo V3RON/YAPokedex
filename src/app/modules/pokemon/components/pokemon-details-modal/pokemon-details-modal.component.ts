@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener, Inject, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, Inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { PokemonDetails } from 'src/app/core/model/pokemon.model';
 import { Router } from '@angular/router';
@@ -10,23 +10,24 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-export class PokemonDetailsModalComponent {
+export class PokemonDetailsModalComponent implements OnInit {
   pokemon: PokemonDetails;
 
   constructor(
-    private _router: Router,
+    private router: Router,
     @Inject(MAT_DIALOG_DATA) private data: any
   ) {
+  }
+
+  ngOnInit(): void {
     this.pokemon = this.data.pokemon;
   }
 
   @HostListener('window:keyup', ['$event'])
-  keyboardKeyClicked(event) {
-    if (event.keyCode === 37) {
+  keyboardKeyClicked(event: KeyboardEvent) {
+    if (event.key === 'ArrowRight') {
       this.moveToNextPokemon();
-    }
-
-    if (event.keyCode === 39) {
+    } else if (event.key === 'ArrowLeft') {
       this.moveToPreviousPokemon();
     }
   }
@@ -37,7 +38,7 @@ export class PokemonDetailsModalComponent {
       return;
     }
 
-    this._router.navigateByUrl('/pokemons/' + nextPokemonId);
+    this.router.navigateByUrl('/pokemons/' + nextPokemonId);
   }
 
   moveToPreviousPokemon(): void {
@@ -46,6 +47,6 @@ export class PokemonDetailsModalComponent {
       return;
     }
 
-    this._router.navigateByUrl('/pokemons/' + prevPokemonId);
+    this.router.navigateByUrl('/pokemons/' + prevPokemonId);
   }
 }

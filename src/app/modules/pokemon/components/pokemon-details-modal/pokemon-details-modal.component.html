@@ -1,15 +1,21 @@
-<header class="pokemon-details-modal__header">
-    <a [disabled]="pokemon.id - 1 <= 0" (click)="moveToPreviousPokemon()" mat-icon-button aria-label="Previous Pokemon">
-        <mat-icon>chevron_left</mat-icon>
+<ng-container *ngIf="pokemon">
+  <header class="pokemon-details-modal__header">
+    <a (click)="moveToPreviousPokemon()" [disabled]="pokemon.id - 1 <= 0" aria-label="Previous Pokemon"
+       class="pokemon-details-modal__arrow--left"
+       mat-icon-button>
+      <mat-icon>chevron_left</mat-icon>
     </a>
-    <h1 mat-dialog-title>
-        {{ pokemon.name | titlecase }}
+    <h1 class="pokemon-details-modal__title" mat-dialog-title>
+      {{ pokemon.name | titlecase }}
     </h1>
-    <a [disabled]="pokemon.id + 1 > 100" (click)="moveToNextPokemon()" mat-icon-button aria-label="Next Pokemon">
-        <mat-icon>chevron_right</mat-icon>
+    <a (click)="moveToNextPokemon()" [disabled]="pokemon.id + 1 > 100" aria-label="Next Pokemon"
+       class="pokemon-details-modal__arrow--right"
+       mat-icon-button>
+      <mat-icon>chevron_right</mat-icon>
     </a>
-</header>
-<mat-dialog-content>
-    <img [src]="pokemon.sprites.front_default" [alt]="pokemon.name + ' photo'" class="pokemon-details-modal__photo">
+  </header>
+  <mat-dialog-content>
+    <img [alt]="pokemon.name + ' photo'" [src]="pokemon.sprites.front_default" class="pokemon-details-modal__photo">
     <poke-pokemon-stats-view [stats]="pokemon.stats"></poke-pokemon-stats-view>
-</mat-dialog-content>
+  </mat-dialog-content>
+</ng-container>

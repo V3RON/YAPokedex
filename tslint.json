@@ -12,13 +12,13 @@
     "directive-selector": [
       true,
       "attribute",
-      "app",
+      "poke",
       "camelCase"
     ],
     "component-selector": [
       true,
       "element",
-      "app",
+      "poke",
       "kebab-case"
     ],
     "import-blacklist": [
@@ -87,6 +87,7 @@
     "use-pipe-transform-interface": true
   },
   "rulesDirectory": [
-    "codelyzer"
+    "codelyzer",
+    "tslint-consistent-codestyle"
   ]
 }

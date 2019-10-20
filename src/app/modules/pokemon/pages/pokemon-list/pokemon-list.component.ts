@@ -3,9 +3,9 @@ import { PokemonService } from 'src/app/core/services/pokemon/pokemon.service';
 import { Observable } from 'rxjs';
 import { Pokemon } from 'src/app/core/model/pokemon.model';
 import { distinctUntilChanged, filter, map, startWith, switchMap } from 'rxjs/operators';
-import { MatSnackBar, PageEvent } from '@angular/material';
+import { PageEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
-import { PathUtils } from 'src/app/core/utils/path.util';
+import PathUtils from 'src/app/core/utils/path.utils';
 
 @Component({
   selector: 'poke-pokemon-list',
@@ -19,31 +19,30 @@ export class PokemonListComponent implements OnInit {
   pageIndex$: Observable<number>;
 
   constructor(
-    private _pokemonService: PokemonService,
-    private _activatedRoute: ActivatedRoute,
-    private _router: Router,
-    private _matSnackbar: MatSnackBar
-  ) {}
+    private pokemonService: PokemonService,
+    private activatedRoute: ActivatedRoute,
+    private router: Router
+  ) {
+  }
 
-  // FIX RESOLVER
   ngOnInit(): void {
-    this.pageIndex$ = this._activatedRoute.queryParams.pipe(
+    this.pageIndex$ = this.activatedRoute.queryParams.pipe(
       map(params => params.page),
       filter(page => !!page),
       startWith(0),
       distinctUntilChanged()
     );
     this.pokemons$ = this.pageIndex$.pipe(
-      switchMap(pageNumber => this._pokemonService.getPage(pageNumber)),
-      map(page => page.results.map(pokemon => ({ ...pokemon, id: Number(PathUtils.getLastSegment(pokemon.url)) }))),
+      switchMap(pageNumber => this.pokemonService.getPage(pageNumber)),
+      map(page => page.results.map(pokemon => ({...pokemon, id: Number(PathUtils.getLastSegment(pokemon.url))}))),
     );
   }
 
   pageChanged(page: PageEvent): void {
-    this._router.navigate([], { relativeTo: this._activatedRoute, queryParams: { page: page.pageIndex }});
+    this.router.navigate([], {relativeTo: this.activatedRoute, queryParams: {page: page.pageIndex}});
   }
 
   showPokemonModal(id: number): void {
-    this._router.navigate(['/pokemons', id], { queryParamsHandling: 'merge' });
+    this.router.navigate(['/pokemons', id], {queryParamsHandling: 'merge'});
   }
 }

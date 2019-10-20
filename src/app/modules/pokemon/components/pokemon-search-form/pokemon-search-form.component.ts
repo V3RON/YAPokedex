@@ -5,37 +5,37 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'poke-search-form',
-  templateUrl: './search-form.component.html',
-  styleUrls: ['./search-form.component.scss'],
+  templateUrl: './pokemon-search-form.component.html',
+  styleUrls: ['./pokemon-search-form.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None
 })
-// TODO: COMPONENT LOGIC TO BE GENERALIZED AND EXTRACTED
 export class SearchFormComponent implements OnInit, OnDestroy {
-  @Output('pokeSearch')
-  searchEventEmitter: EventEmitter<number> = new EventEmitter<number>();
+  @Output()
+  pokeSearch: EventEmitter<number> = new EventEmitter<number>();
 
   searchForm: FormGroup = new FormGroup({
     id: new FormControl('', [Validators.min(1), Validators.max(100), Validators.required])
   });
 
-  private _searchInputSubject: Subject<number> = new Subject<number>();
-  private _searchInputSub: Subscription;
+  private searchInputSubject: Subject<number> = new Subject<number>();
+  private searchInputSub: Subscription;
 
   constructor() {}
 
   ngOnInit(): void {
-    this._searchInputSub = this._searchInputSubject.pipe(
+    this.searchInputSub = this.searchInputSubject.pipe(
       debounceTime(100),
-      map(() => this.searchForm.value.id)
-    ).subscribe(id => this.searchEventEmitter.emit(id));
+      map(() => this.searchForm.value.id),
+      map(id => parseInt(id, 10))
+    ).subscribe(id => this.pokeSearch.emit(id));
   }
 
   ngOnDestroy(): void {
-    this._searchInputSub.unsubscribe();
+    this.searchInputSub.unsubscribe();
   }
 
   searchById(id: number) {
-    this._searchInputSubject.next(id);
+    this.searchInputSubject.next(id);
   }
 }

@@ -1,0 +1,8 @@
+<form (ngSubmit)="searchById($event)" [formGroup]="searchForm" class="poke-search-form__form">
+  <mat-form-field appearance="outline" class="poke-search-form__input">
+    <input digitOnly formControlName="id" id="id" inputmode="numeric" matInput maxlength="3" name="id"
+           pattern="[0-9]*" placeholder="Pokemon ID..." type="search">
+  </mat-form-field>
+  <button [disabled]="searchForm.invalid" class="poke-search-form__submit" mat-raised-button type="submit">Show!
+  </button>
+</form>

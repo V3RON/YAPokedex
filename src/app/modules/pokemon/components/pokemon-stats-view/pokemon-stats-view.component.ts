@@ -15,8 +15,8 @@ import { map } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
 
 interface PlainPokemonStat {
-  name: string,
-  value: number
+  name: string;
+  value: number;
 }
 
 @Component({
@@ -27,40 +27,45 @@ interface PlainPokemonStat {
   encapsulation: ViewEncapsulation.None
 })
 export class PokemonStatsViewComponent implements OnInit, OnDestroy, OnChanges {
-  _plainStats: PlainPokemonStat[];
-  _cols = 1;
+  plainStats: PlainPokemonStat[];
+  cols = 1;
 
   @Input()
   stats: PokemonStat[];
 
-  private _breakpointObserverSub: Subscription;
+  private breakpointObserverSub: Subscription;
 
   constructor(
-    private _breakpointObserver: BreakpointObserver,
-    private _changeDetRef: ChangeDetectorRef
-  ) {}
+    private breakpointObserver: BreakpointObserver,
+    private changeDetRef: ChangeDetectorRef
+  ) {
+  }
 
   ngOnInit(): void {
-    this._breakpointObserverSub = this._breakpointObserver
-      .observe([ Breakpoints.Medium, Breakpoints.Large ])
+    this.breakpointObserverSub = this.breakpointObserver
+      .observe([Breakpoints.Medium, Breakpoints.Large])
       .pipe(map(result => result.breakpoints))
       .subscribe(result => {
         if (result[Breakpoints.Medium]) {
-          this._cols = 2;
+          this.cols = 2;
         } else if (result[Breakpoints.Large]) {
-          this._cols = 3;
+          this.cols = 3;
         } else {
-          this._cols = 1;
+          this.cols = 1;
         }
-        this._changeDetRef.markForCheck();
+        this.changeDetRef.markForCheck();
       });
   }
 
   ngOnDestroy(): void {
-    this._breakpointObserverSub.unsubscribe();
+    if (this.breakpointObserverSub) {
+      this.breakpointObserverSub.unsubscribe();
+    }
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this._plainStats = this.stats.map(stat => ({ name: stat.stat.name, value: stat.base_stat }));
+    if (changes.stats) {
+      this.plainStats = this.stats.map(stat => ({name: stat.stat.name, value: stat.base_stat}));
+    }
   }
 }
