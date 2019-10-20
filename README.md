@@ -8,7 +8,9 @@ I was given the interview task of creating an Angular application consuming Poke
 
 ## So, what libraries have you used?
 
-Not many, there are 'digitOnly' directive for inputs and Angular CDK component pack.
+* Angular CDK
+* ngx-progressbar
+* digitOnly
 
 ## Did you get the job?
 
