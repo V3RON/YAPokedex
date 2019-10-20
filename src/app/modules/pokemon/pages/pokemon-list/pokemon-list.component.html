@@ -4,8 +4,9 @@
     <poke-search-form (pokeSearch)="showPokemonModal($event)"></poke-search-form>
   </div>
 </header>
-<poke-list-view (page)="pageChanged($event)" [items]="pokemons$ | async" [length]="100" [pageIndex]="pageIndex$ | async"
-                [pageSize]="10" class="pokemon-list__view">
+<poke-list-view (page)="pageChanged($event)" [items]="pokemons$ | async" [length]="length"
+                [pageIndex]="pageIndex$ | async"
+                [pageSize]="pageSize" class="pokemon-list__view">
   <ng-template let-item>
     <div (click)="showPokemonModal(item.id)" class="pokemon-list__card">
       <div class="pokemon-list__card-header">{{ item.name | titlecase }}</div>

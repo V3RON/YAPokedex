@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, OnDestroy, OnInit, Ou
 import { Subject, Subscription } from 'rxjs';
 import { debounceTime, map } from 'rxjs/operators';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { CONFIG } from '../../../../core/config/config';
 
 @Component({
   selector: 'poke-search-form',
@@ -15,7 +16,7 @@ export class SearchFormComponent implements OnInit, OnDestroy {
   pokeSearch: EventEmitter<number> = new EventEmitter<number>();
 
   searchForm: FormGroup = new FormGroup({
-    id: new FormControl('', [Validators.min(1), Validators.max(100), Validators.required])
+    id: new FormControl('', [Validators.min(1), Validators.max(CONFIG.pokemon.max), Validators.required])
   });
 
   private searchInputSubject: Subject<number> = new Subject<number>();

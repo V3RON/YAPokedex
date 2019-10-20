@@ -6,6 +6,7 @@ import { MAT_DIALOG_DATA, MatButtonModule, MatIconModule } from '@angular/materi
 import { provideMagicalMock } from '../../../../../../mock/spy-helper.util';
 import { Router } from '@angular/router';
 import { ChangeDetectionStrategy, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { CONFIG } from '../../../../core/config/config';
 
 describe('PokemonDetailsModalComponent', () => {
   let component: PokemonDetailsModalComponent;
@@ -21,7 +22,7 @@ describe('PokemonDetailsModalComponent', () => {
           provide: MAT_DIALOG_DATA,
           useValue: {
             pokemon: {
-              id: 100,
+              id: CONFIG.pokemon.max / 2,
               name: 'lorem-ipsum',
               sprites: {
                 front_default: 'http://localhost'
@@ -72,8 +73,8 @@ describe('PokemonDetailsModalComponent', () => {
       expect(routerSpy.navigateByUrl).toHaveBeenCalledTimes(0);
     });
 
-    it('should disable right arrow when id is 100', () => {
-      component.pokemon.id = 100;
+    it(`should disable right arrow when id is ${CONFIG.pokemon.max}`, () => {
+      component.pokemon.id = CONFIG.pokemon.max;
       fixture.detectChanges();
 
       const arrow = fixture.debugElement.query(By.css('.pokemon-details-modal__arrow--right')).nativeElement;
@@ -83,8 +84,8 @@ describe('PokemonDetailsModalComponent', () => {
       expect(routerSpy.navigateByUrl).toHaveBeenCalledTimes(0);
     });
 
-    it('should change route to next pokemon when id is not 100', () => {
-      component.pokemon.id = 50;
+    it(`should change route to next pokemon when id is not ${CONFIG.pokemon.max}`, () => {
+      component.pokemon.id = CONFIG.pokemon.max / 2;
       fixture.detectChanges();
 
       const arrow = fixture.debugElement.query(By.css('.pokemon-details-modal__arrow--right')).nativeElement;
@@ -120,8 +121,8 @@ describe('PokemonDetailsModalComponent', () => {
       expect(routerSpy.navigateByUrl).toHaveBeenCalledTimes(0);
     });
 
-    it('should disable right arrow key when id is 100', () => {
-      component.pokemon.id = 100;
+    it(`should disable right arrow key when id is ${CONFIG.pokemon.max}`, () => {
+      component.pokemon.id = CONFIG.pokemon.max;
       fixture.detectChanges();
 
       const event = new KeyboardEvent('keyup', {
@@ -131,8 +132,8 @@ describe('PokemonDetailsModalComponent', () => {
       expect(routerSpy.navigateByUrl).toHaveBeenCalledTimes(0);
     });
 
-    it('should change route to next pokemon when id is not 100', () => {
-      component.pokemon.id = 50;
+    it(`should change route to next pokemon when id is not ${CONFIG.pokemon.max}`, () => {
+      component.pokemon.id = CONFIG.pokemon.max / 2;
       fixture.detectChanges();
 
       const event = new KeyboardEvent('keyup', {

@@ -6,6 +6,7 @@ import { distinctUntilChanged, filter, map, startWith, switchMap } from 'rxjs/op
 import { PageEvent } from '@angular/material';
 import { ActivatedRoute, Router } from '@angular/router';
 import PathUtils from 'src/app/core/utils/path.utils';
+import { CONFIG } from '../../../../core/config/config';
 
 @Component({
   selector: 'poke-pokemon-list',
@@ -17,6 +18,8 @@ import PathUtils from 'src/app/core/utils/path.utils';
 export class PokemonListComponent implements OnInit {
   pokemons$: Observable<Pokemon[]>;
   pageIndex$: Observable<number>;
+  length = CONFIG.pokemon.max;
+  pageSize = CONFIG.pageSize;
 
   constructor(
     private pokemonService: PokemonService,

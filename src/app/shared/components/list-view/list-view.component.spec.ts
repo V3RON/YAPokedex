@@ -37,7 +37,10 @@ describe('ListViewComponent', () => {
   it('should emit event when page is changed', (done: DoneFn) => {
     const fixture: ComponentFixture<TestComponent> = TestBed.createComponent(TestComponent);
     const component: ListViewComponent = fixture.debugElement.query(By.directive(ListViewComponent)).componentInstance;
-    component.page.subscribe(() => done());
+    component.page.subscribe(page => {
+      expect(page).toBeDefined();
+      done();
+    });
     component.pageIndex = 1;
     component.pageSize = 10;
     component.length = 100;

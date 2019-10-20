@@ -5,6 +5,7 @@ import { MatButtonModule, MatFormFieldModule, MatInputModule } from '@angular/ma
 import { ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { By } from '@angular/platform-browser';
+import { CONFIG } from '../../../../core/config/config';
 
 describe('SearchFormComponent', () => {
   let component: SearchFormComponent;
@@ -88,13 +89,13 @@ describe('SearchFormComponent', () => {
     });
   });
 
-  describe('should not emit pokeSearch event when ID is greater than 100', () => {
+  describe(`should not emit pokeSearch event when ID is greater than ${CONFIG.pokemon.max}`, () => {
     let dataEmitted;
 
     beforeEach(() => {
       dataEmitted = undefined;
       component.searchForm.setValue({
-        id: '101'
+        id: String(CONFIG.pokemon.max) + 1
       });
       component.pokeSearch.subscribe(() => dataEmitted = true);
       fixture.detectChanges();

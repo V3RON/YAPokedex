@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, HostListener, Inject, OnInit, ViewE
 import { MAT_DIALOG_DATA } from '@angular/material';
 import { PokemonDetails } from 'src/app/core/model/pokemon.model';
 import { Router } from '@angular/router';
+import { CONFIG } from '../../../../core/config/config';
 
 @Component({
   selector: 'poke-pokemon-details-modal',
@@ -34,7 +35,7 @@ export class PokemonDetailsModalComponent implements OnInit {
 
   moveToNextPokemon(): void {
     const nextPokemonId: number = this.pokemon.id + 1;
-    if (nextPokemonId > 100) {
+    if (nextPokemonId > CONFIG.pokemon.max) {
       return;
     }
 
@@ -43,7 +44,7 @@ export class PokemonDetailsModalComponent implements OnInit {
 
   moveToPreviousPokemon(): void {
     const prevPokemonId: number = this.pokemon.id - 1;
-    if (prevPokemonId <= 0) {
+    if (prevPokemonId <= 1) {
       return;
     }
 
